@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Cadastro de Médias dos Alunos</title>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Formulário de Média do Aluno</h1>
+
+        <form id="formAluno">
+            <label for="nome">Nome do aluno:</label>
+            <input type="text" id="nome" placeholder="Digite o nome do aluno" required>
+
+            <label for="nota1">Nota do 1º bimestre:</label>
+            <input type="number" id="nota1" placeholder="Digite a primeira nota" min="0" max="10" step="0.1" required>
+
+            <label for="nota2">Nota do 2º bimestre:</label>
+            <input type="number" id="nota2" placeholder="Digite a segunda nota" min="0" max="10" step="0.1" required>
+
+            <button type="submit">Calcular Média</button>
+        </form>
+
+        <div id="resultado" class="resultado"></div>
+
+        <h2>Lista de Alunos</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Nota 1</th>
+                    <th>Nota 2</th>
+                    <th>Média</th>
+                    <th>Situação</th>
+                </tr>
+            </thead>
+            <tbody id="corpoTabela">
+                <!-- Os dados dos alunos serão inseridos aqui pelo JavaScript -->
+            </tbody>
+        </table>
+
+        <button class="btn-limpar" onclick="limparDados()">Limpar Dados</button>
+    </div>
+
+    <script>
+        // Vetor que armazenará os dados dos alunos
+        let alunos = [];
+
+        // Recupera os dados do localStorage quando a página é carregada
+        window.onload = function() {
+            let dadosSalvos = localStorage.getItem("alunos");
+
+            if (dadosSalvos) {
+                alunos = JSON.parse(dadosSalvos);
+                exibirTabela();
+            }
+        };
+
+        // Captura o formulário
+        const formAluno = document.getElementById("formAluno");
+
+        formAluno.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            // Recebe os valores digitados
+            let nome = document.getElementById("nome").value;
+            let nota1 = parseFloat(document.getElementById("nota1").value);
+            let nota2 = parseFloat(document.getElementById("nota2").value);
+
+            // Calcula a média
+            let media = (nota1 + nota2) / 2;
+
+            // Define a situação do aluno
+            let situacao = definirSituacao(media);
+
+            // Cria um objeto aluno
+            let aluno = {
+                nome: nome,
+                nota1: nota1,
+                nota2: nota2,
+                media: media,
+                situacao: situacao
+            };
+
+            // Insere o aluno no vetor
+            alunos.push(aluno);
+
+            // Salva o vetor no localStorage
+            localStorage.setItem("alunos", JSON.stringify(alunos));
+
+            // Exibe os dados do aluno cadastrado
+            exibirResultado(aluno);
+
+            // Atualiza a tabela
+            exibirTabela();
+
+            // Limpa o formulário
+            formAluno.reset();
+        });
+
+        function definirSituacao(media) {
+            if (media >= 6) {
+                return "Aprovado";
+            } else if (media >= 2 && media < 6) {
+                return "Exame Final";
+            } else {
+                return "Reprovado";
+            }
+        }
+
+        function exibirResultado(aluno) {
+            let resultado = document.getElementById("resultado");
+
+            resultado.style.display = "block";
+
+            resultado.innerHTML = `
+                <h3>Dados do aluno</h3>
+                <p><strong>Nome:</strong> ${aluno.nome}</p>
+                <p><strong>Nota 1:</strong> ${aluno.nota1.toFixed(1)}</p>
+                <p><strong>Nota 2:</strong> ${aluno.nota2.toFixed(1)}</p>
+                <p><strong>Média:</strong> ${aluno.media.toFixed(1)}</p>
+                <p><strong>Situação:</strong> ${aluno.situacao}</p>
+            `;
+        }
+
+        function exibirTabela() {
+            let corpoTabela = document.getElementById("corpoTabela");
+
+            corpoTabela.innerHTML = "";
+
+            alunos.forEach(function(aluno) {
+                let classeSituacao = "";
+
+                if (aluno.situacao === "Aprovado") {
+                    classeSituacao = "aprovado";
+                } else if (aluno.situacao === "Exame Final") {
+                    classeSituacao = "exame";
+                } else {
+                    classeSituacao = "reprovado";
+                }
+
+                corpoTabela.innerHTML += `
+                    <tr>
+                        <td>${aluno.nome}</td>
+                        <td>${aluno.nota1.toFixed(1)}</td>
+                        <td>${aluno.nota2.toFixed(1)}</td>
+                        <td>${aluno.media.toFixed(1)}</td>
+                        <td class="${classeSituacao}">${aluno.situacao}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function limparDados() {
+            // Limpa o vetor
+            alunos = [];
+
+            // Remove os dados do localStorage
+            localStorage.removeItem("alunos");
+
+            // Atualiza a tabela
+            exibirTabela();
+
+            // Esconde o resultado
+            document.getElementById("resultado").style.display = "none";
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,101 @@
+body {
+font-family: Arial, Helvetica, sans-serif;
+background-color: #f4f4f4;
+margin: 0;
+padding: 20px;
+}
+
+.container {
+max-width: 900px;
+margin: auto;
+background-color: #ffffff;
+padding: 25px;
+border-radius: 10px;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+}
+
+h1, h2 {
+text-align: center;
+color: #333333;
+}
+
+form {
+display: flex;
+flex-direction: column;
+gap: 12px;
+margin-bottom: 25px;
+}
+
+label {
+font-weight: bold;
+}
+
+input {
+padding: 10px;
+font-size: 16px;
+border: 1px solid #cccccc;
+ border-radius: 5px;
+}
+
+button {
+padding: 12px;
+font-size: 16px;
+background-color: #007bff;
+color: white;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+}
+
+button:hover {
+background-color: #0056b3;
+}
+
+.resultado {
+background-color: #e9f5ff;
+padding: 15px;
+border-radius: 5px;
+margin-bottom: 25px;
+display: none;
+}
+
+table {
+width: 100%;
+border-collapse: collapse;
+margin-top: 15px;
+}
+
+th, td {
+border: 1px solid #cccccc;
+padding: 10px;
+text-align: center;
+}
+
+th {
+background-color: #007bff;
+color: white;
+}
+
+.aprovado {
+color: green;
+font-weight: bold;
+}
+
+.exame {
+color: orange;
+font-weight: bold;
+}
+
+.reprovado {
+color: red;
+font-weight: bold;
+}
+
+.btn-limpar {
+margin-top: 15px;
+background-color: #dc3545;
+}
+
+.btn-limpar:hover {
+background-color: #a71d2a;
+}
